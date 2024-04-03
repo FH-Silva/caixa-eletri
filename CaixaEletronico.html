@@ -1,73 +1,169 @@
 <html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+
 <head>
-	<title>Caixa Elettrônico</title>
-	<script> 
-		var saldo = 100.5; //Float
+	<script>
+		var saldo = 100.5;
+		var valorSaque = []; //Array para registrar os valores de saque (para ser usado no extrato)
+		var valorDepos = []; //Array para registrar os valores de deposito
+		var nomeUser = prompt("Como gostaria de ser chamado(a)? ");
+		alert("Olá, " + nomeUser + ", é um prazer ter você por aqui!");
+
 		function inicio() {
+			var escolha = parseInt(prompt('Para aonde vamos agora? 1.) Saldo 2.) Extrato 3.) Saque 4.) Depósito 5.) Transferência 6.) Sair'));
 
-			var escolha = parseInt(prompt('Selecione uma opção 1.) Saldo 2.) Depósito 3.) Saque 4.) Sair'));
-
-			if (escolha === 1) {
-				ver_saldo();
-			} else if (escolha === 2) {
-				fazer_deposito();
-			} else if (escolha === 3) {
-				fazer_saque();
-			} else if (escolha === 4) {
-				sair();
-			} else {
-				erro();
+			switch (escolha) {
+				case 1:
+				var pass = parseInt(prompt("Digite a senha: "));
+				if (pass === 3589) {
+					ver_saldo();
+				}else{
+					alert("Senha incorreta");
+					inicio();
+				}
+					break;
+				case 2:
+					ver_extrato();
+					break;
+				case 3:
+					fazer_saque();
+					break;
+				case 4:
+					fazer_deposito();
+					break;
+				case 5:
+					fazer_transferencia();
+					break;
+				case 6:
+					sair();
+					break;
+				default:
+					erro();
 			}
-		}		
+		}
 
 		function ver_saldo() {
-			alert('Seu saldo atual é: ' + saldo);
-			inicio();
+				alert('Seu saldo atual é: ' + saldo);
+				inicio();
+		}
+
+		function ver_extrato() {
+			var pass = parseInt(prompt("Digite a senha: "));
+
+			if (pass === 3589) {
+				alert("Extrato \n" + "\nSaldo: " + saldo + "\nValores sacados: " + valorSaque + "\nValores depositados: " + valorDepos);
+				inicio();
+			} else {
+				alert("Senha incorreta");
+				ver_extrato();
+			}
 		}
 
 		function fazer_deposito() {
-			var deposito = parseFloat(prompt('Qual o valor para depósito?'));
-			// Not a Number
-			if (isNaN(deposito) || deposito === '') {
-				alert('Por favor, informe um número:');
-				fazer_deposito();
+			var pass = parseInt(prompt("Digite a senha: "));
+
+			if (pass === 3589) {
+				var deposito = parseFloat(prompt('Qual o valor para depósito?'));
+				// Not a Number
+				if (isNaN(deposito) || deposito === '' || deposito <= 0) {
+					alert('Por favor, informe um número válido:');
+					fazer_deposito();
+				} else {
+					valorDepos.push(deposito); //Pega o valor digitado pelo usuário e adiciona a array (para servir como registro)
+					saldo += deposito;
+					ver_saldo();
+				}
 			} else {
-				saldo += deposito;
-				ver_saldo();
+				alert("Senha incorreta");
+				fazer_deposito();
 			}
 		}
 
 		function fazer_saque() {
-			var saque = parseFloat(prompt('Qual o valor para saque?'));
-			if (isNaN(saque) || saque === '') {
-				alert('Por favor, informe um número:');
-				fazer_saque();
+			var pass = parseInt(prompt("Digite a senha: "));
+
+			if (pass === 3589) {
+				var saque = parseFloat(prompt('Qual o valor para saque?'));
+				if (isNaN(saque) || saque === '') {
+					alert('Por favor, informe um número:');
+					fazer_saque();
+				} else if (saque > saldo || saque <= 0) { //Usuário não pode digitar valores que não pode sacar
+					alert("Operação não autorizada");
+					fazer_saque();
+				} else {
+					valorSaque.push(saque); //Registra os valores digitados na array
+					saldo -= saque;
+					ver_saldo();
+				}
 			} else {
-				saldo -= saque;
-				
-				ver_saldo();
+				alert("Senha incorreta");
+				fazer_saque();
+			}
+		}
+
+		function fazer_transferencia() {
+			var pass = parseInt(prompt("Digite a senha: "));
+
+			if (pass === 3589) {
+
+				var numConta = parseInt(prompt("Digite, com atenção, o número da conta: ")); //Número da conta
+				var transferencia = parseFloat(prompt("Qual o valor a ser transferido?")); //Valor da transferencia
+
+				if (isNaN(numConta) || isNaN(transferencia) || numConta === "" || transferencia === "") { //Regras para os valores digitados
+					alert("Digite um número, por favor");
+					fazer_transferencia();
+				} else if (transferencia <= 0 || transferencia > saldo) {
+					alert("Operação não autorizada");
+					fazer_transferencia();
+				} else {
+					saldo -= transferencia;
+					ver_saldo();
+				}
+			} else {
+				alert("Senha incorreta");
+				fazer_transferencia();
 			}
 		}
 
 		function erro() {
-			alert('Por favor, informe um número entre 1 e 4');
+			alert('Por favor, informe um número entre 1 e 6');
 			inicio();
 		}
 
 		function sair() {
 			var confirma = confirm('Você deseja sair?');
 			if (confirma) {
+				alert(nomeUser + ", foi um prazer ter você por aqui!");
 				window.close();
 			} else {
 				inicio();
 			}
 		}
-		
+
 		inicio();
 	</script>
+
+	<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:xd_Signature msdt:dt="string"></mso:xd_Signature>
+<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor msdt:dt="string">GABRIEL AZEVEDO</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor>
+<mso:Order msdt:dt="string">2400.00000000000</mso:Order>
+<mso:xd_ProgID msdt:dt="string"></mso:xd_ProgID>
+<mso:_ExtendedDescription msdt:dt="string"></mso:_ExtendedDescription>
+<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author msdt:dt="string">GABRIEL AZEVEDO</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author>
+<mso:ComplianceAssetId msdt:dt="string"></mso:ComplianceAssetId>
+<mso:TemplateUrl msdt:dt="string"></mso:TemplateUrl>
+<mso:ReferenceId msdt:dt="string"></mso:ReferenceId>
+<mso:TriggerFlowInfo msdt:dt="string"></mso:TriggerFlowInfo>
+<mso:ContentTypeId msdt:dt="string">0x01010007715694252FA147AD75DD5D81F5DACE</mso:ContentTypeId>
+<mso:_SourceUrl msdt:dt="string"></mso:_SourceUrl>
+<mso:_SharedFileIndex msdt:dt="string"></mso:_SharedFileIndex>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+	<title></title>
 </head>
 
 <body>
 
 </body>
+
 </html>
